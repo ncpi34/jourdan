@@ -1,0 +1,23 @@
+{% autoescape off %}
+Un utilisateur vient de faire une demande de création de compte sur le site,
+C'est un professionnel,
+Veuillez trouver les informations de cet utilisateur:
+
+    Infos:
+
+    Nom utilisateur: {{ user.username }}
+    Email: {{ user.email }}
+    Forme Legale: {{ user.legal_form.name }}
+    Nom entreprise: {{ user.company_name }}
+    SIRET: {{ user.siret_number }}
+
+
+    Adresse:
+
+    Rue: {{ address.street }}
+    Suite adresse: {{ address.apartment }}
+    CP: {{ address.zip }}
+    Ville: {{ address.city }}
+
+
+{% endautoescape %}

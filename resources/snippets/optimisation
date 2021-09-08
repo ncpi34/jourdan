@@ -1,0 +1,45 @@
+https://levelup.gitconnected.com/optimizing-django-queries-28e96ad204de
+https://medium.com/@EnterGodMode__/optimizing-django-rest-framework-b014e62eb932
+https://itnext.io/optimizing-django-rest-framework-performance-with-django-auto-prefetching-c70ce316463e
+
+python manage.py collectstatic --noinput
+python manage.py compress --force
+python manage.py collectstatic --noinput
+
+https://raturi.in/blog/compress-and-minify-files-django/
+
+TODO continue logging and comments
+
+compress middleware
+pip uninstall django-compression-middleware
+
+PERFORMANCE ANALYSIS
+https://www.appdynamics.com/blog/engineering/a-performance-analysis-of-python-wsgi-servers-part-2/
+
+
+BEST LIBRARIES PY
+https://opensource.com/article/19/9/pypi-guide
+https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e
+https://hugovk.github.io/top-pypi-packages/
+
+
+TAILWIND e commerce
+https://codepen.io/abdelrhman/pen/BaNPVJO
+https://tailwindcomponents.com/component/e-commerce-product-listing-page
+https://tailwindcomponents.com/component/e-commerce-product-page
+https://www.youtube.com/watch?v=_yVjA6s6i9M
+
+DJANGO
+https://samulinatri.com/blog/django-translation/
+https://stackoverflow.com/questions/63392426/how-to-use-tailwindcss-with-django
+
+OPTIMIZE PROD
+https://openfolder.sh/django-faster-speed-tutorial
+https://developers.google.com/speed/pagespeed/insights/
+https://gtmetrix.com/
+https://dev.to/levivm/tips-for-improving-your-django-app-performance-bgi
+https://djangostars.com/blog/django-performance-optimization-tips/
+https://coderbook.com/@marcus/68-times-faster-with-django-performance-optimization/
+https://swapps.com/blog/speed-it-up-recommendations-to-make-your-django-app-faster/
+https://django.readthedocs.io/en/stable/topics/cache.html
+https://testdriven.io/blog/storing-django-static-and-media-files-on-amazon-s3/

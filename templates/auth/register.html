@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block navbar %}
+{% include "important/navbar.html" %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto w-full lg:w-2/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen">
+            <!-- Part -->
+            <form method="post"  class="bg-white shadow-xl relative">
+            <h5 class="text-2xl py-8 text-center">Création de compte</h5>
+                {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="flex justify-center mb-2">
+                            <div class="mb-4 w-3/4">
+                                <label class="block text-grey-darker text-sm mb-2" for="{{ field.auto_id }}">
+                                   {{ field.label_tag  }}
+                                </label>
+                                {% for error in field.errors %}
+                                    {% if error %}
+                                        <div class="text-red-500 mb-1">
+                                            {{ error }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                <h3 class="text-2xl py-8 text-center">Votre adresse:</h3>
+                    <!-- Address -->
+                    {% for field in form_address %}
+                        <div class="flex justify-center mb-2">
+                            <div class="mb-4 w-3/4">
+                                <label class="block text-grey-darker text-sm mb-2" for="{{ field.auto_id }}">
+                                   {{ field.label_tag  }}
+                                </label>
+                                {% for error in field.errors %}
+                                    {% if error %}
+                                        <div class="text-red-500 mb-1">
+                                            {{ error }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- Address -->
+
+                <div class="flex justify-center">
+                    <button type="submit"
+                            class="mb-5 btn btn-orange">
+                            Enregistrer
+                    </button>
+                </div>
+            </form>
+            <!-- Part -->
+    </div>
+{% endblock content %}
+

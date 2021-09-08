@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+{% include "important/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div id="profileAts">
+
+    <div class="lg:w-2/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen">
+    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/2">
+
+            <!-- Article -->
+            <article class="overflow-hidden rounded-lg shadow-lg hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105">
+                <a href="{% url 'order:order_summary' %}" >
+
+                <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 class="text-lg">
+                            Commandes
+                    </h1>
+                </header>
+
+                <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-invoice"></i>
+{#                        <img alt="Placeholder" class="block rounded-full" src="https://picsum.photos/32/32/?random">#}
+                        <p class="ml-2 text-sm">
+                            Voir mes commandes passées
+                        </p>
+                    </div>
+                </footer>
+                    <img alt="Placeholder" class="block h-64 w-full sca" src="/media/img/order.jpg">
+                </a>
+
+
+            </article>
+            <!-- END Article -->
+
+        </div>
+        <!-- END Column -->
+
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/2">
+
+            <!-- Article -->
+            <article class="overflow-hidden rounded-lg shadow-lg hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105">
+                <a href="{% url 'website:favorites' %}" >
+
+                <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 class="text-lg">
+                            Favoris
+                    </h1>
+                </header>
+
+                <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                    <div class="flex items-center" >
+                        <i class="far fa-star"></i>
+{#                        <img alt="Placeholder" class="block rounded-full" src="https://picsum.photos/32/32/?random">#}
+                        <p class="ml-2 text-sm">
+                            Voir mes produits favoris
+                        </p>
+                    </div>
+                </footer>
+                    <img alt="Placeholder" class="block h-64 w-full" src="/media/img/favorite.jpg">
+                </a>
+
+
+            </article>
+            <!-- END Article -->
+
+        </div>
+        <!-- END Column -->
+
+    </div>
+         <div class="flex flex-wrap -mx-1 lg:-mx-4">
+
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/2">
+
+            <!-- Article -->
+            <article class="overflow-hidden rounded-lg shadow-lg hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105">
+                <a href="{% url 'account:update_address' %}" >
+
+                <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 class="text-lg">
+                            Adresse
+                    </h1>
+                </header>
+
+                <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-invoice"></i>
+{#                        <img alt="Placeholder" class="block rounded-full" src="https://picsum.photos/32/32/?random">#}
+                        <p class="ml-2 text-sm">
+                            Modifier mon adresse
+                        </p>
+                    </div>
+                </footer>
+                    <img alt="Placeholder" class="block h-64 w-full" src="/media/img/address.jpg">
+                </a>
+
+
+            </article>
+            <!-- END Article -->
+
+        </div>
+        <!-- END Column -->
+
+
+         <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/2">
+            <!-- Article -->
+            <article class="overflow-hidden rounded-lg shadow-lg hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105">
+                <a href="{% url 'account:update_profile' %}" >
+
+                <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 class="text-lg">
+                            Personnel
+                    </h1>
+                </header>
+
+                <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                    <div class="flex items-center" >
+                        <i class="far fa-star"></i>
+{#                        <img alt="Placeholder" class="block rounded-full" src="https://picsum.photos/32/32/?random">#}
+                        <p class="ml-2 text-sm">
+                            Modifier mes informations personnelles
+                        </p>
+                    </div>
+                </footer>
+                    <img alt="Placeholder" class="block h-64 w-full" src="/media/img/personnal.png">
+                </a>
+
+            </article>
+            <!-- END Article -->
+
+        </div>
+        <!-- END Column -->
+
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block extrascripts %}{% endblock extrascripts %}

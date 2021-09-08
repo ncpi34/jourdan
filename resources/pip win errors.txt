@@ -1,0 +1,1 @@
+pip install rcssmin --install-option="--without-c-extensions"

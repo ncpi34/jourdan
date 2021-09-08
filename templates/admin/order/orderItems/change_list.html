@@ -1,0 +1,186 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  // Sample data
+  let chartData = {{ chart_data | safe }};
+
+  const Data = () => {
+      let arr = []
+      chartData.forEach( ( val, key) => {
+          arr[key] = val.quantity
+      })
+      return arr
+    }
+    const Labels = (arg) => {
+        let arr = []
+        chartData.forEach( ( val, key) => {
+            arr[key] = val.article__name
+
+        })
+        return arr
+    }
+
+
+  // Render the chart
+  const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+              labels: Labels(),
+              datasets: [
+                {
+                  label: "vendus (unité)",
+                  backgroundColor: "#3e95cd",
+                  data: Data()
+                }
+              ]
+            },
+      options: {
+          responsive: true,
+          legend: {display: false},
+          title: {
+              display: true,
+              text: 'Produits les plus vendus en 2020'
+          }
+      }
+  })
+    // Reload chart on month selected
+    const monthSelected = document.querySelector('#month');
+    monthSelected.addEventListener('change', async(event) => {
+        if (chartData.length > 0) {
+            localStorage.setItem('chart_month', JSON.stringify(chartData))
+        }
+        if (chartData.length === 0){
+            if(localStorage.getItem('chart_month')) {
+                chartData = JSON.parse(localStorage.getItem('chart_month'))
+            }
+        }
+        chartData = chartData.filter( async (obj) => {
+            if (yearSelected.value){
+                if (event.target.value) {
+                    if (yearSelected.value === obj.order__date.slice(0,4) && event.target.value === obj.order__date.slice(5,7)) {
+                        chart.options.title.text = `Produits les plus vendus ${obj.order__date.slice(5,7)}/${obj.order__date.slice(0,4)}`
+                        return obj
+                    } else {
+                            chart.options.title.text = `Aucune donnée`
+                            return null
+                        }
+                } else {
+                    if (yearSelected.value === obj.order__date.slice(0,4)) {
+                        chart.options.title.text = `Produits les plus vendus en ${obj.order__date.slice(0,4)}`
+                        return obj
+                    }
+                }
+
+            }
+        })
+        chart.data.datasets[0].data = Data();
+        chart.data.datasets.labels = Labels();
+        chart.update();
+    })
+
+    // Reload chart on year selected
+    const yearSelected = document.querySelector('#year');
+    yearSelected.addEventListener('change', async(event) => {
+        if (chartData.length > 0) {
+            localStorage.setItem('chart', JSON.stringify(chartData))
+        }
+        if (chartData.length === 0){
+            if(localStorage.getItem('chart')) {
+                chartData = JSON.parse(localStorage.getItem('chart'))
+            }
+        }
+        chartData = chartData.filter( async (obj) => {
+            if (monthSelected.value) {
+                if ( monthSelected.value === obj.order__date.slice(5,7) && event.target.value === obj.order__date.slice(0, 4)) {
+                chart.options.title.text = `Produits les plus vendus ${obj.order__date.slice(5,7)}/${obj.order__date.slice(0,4)}`
+                return obj
+                }
+            } else  {
+                let year = event.target.value
+                let year_plus_one = year
+                year_plus_one[year_plus_one.length -1] = 'z'
+                {#console.log(year_plus_one[year_plus_one.length -1] = parseInt(year_plus_one[year_plus_one.length -1]) + 1 )#}
+                console.log('year', year_plus_one)
+                let response = await CallAdminBack(`?order__date__gte=${year}-01-01+00%3A00%3A00%2B02%3A00&order__date__lt=${year}-01-01+00%3A00%3A00%2B02%3A00`)
+                    console.log('res', chartData)
+                {#if (event.target.value === obj.order__date.slice(0, 4)) {#}
+                {#    let year = obj.order__date.slice(0, 4)#}
+                {#    console.log('only year')#}
+                {#    let response = await CallAdminBack(`?order__date__gte=20${year}-01-01+00%3A00%3A00%2B02%3A00&order__date__lt=20${year}-01-01+00%3A00%3A00%2B02%3A00`)#}
+                {#    console.log('res', chartData)#}
+                {##}
+                        {#{'order__date__gte': ['2020-01-01 00:00:00+02:00'], 'order__date__lt': ['2021-01-01 00:00:00+02:00']}#}
+                {#    chart.options.title.text = `Produits les plus vendus en ${obj.order__date.slice(0,4)}`#}
+                {#    return obj#}
+                //{ else {
+                {#    chart.options.title.text = `Aucune donnée`#}
+                {#    return null#}
+                //}
+
+            }
+        })
+        chart.data.datasets[0].data = Data();
+        chart.data.datasets.labels = Labels();
+        chart.update();
+    })
+    const CallAdminBack = (uri) => {
+        let xhr = new XMLHttpRequest()
+        xhr.open("GET", `/admin/order/orderitems/${uri}`, true)
+        xhr.send(null);
+        xhr.onload = async () => {
+            if (xhr.status === 200) {
+                return 200
+                {#await JSON.parse(xhr.response)#}
+            }
+        }
+    }
+});
+
+
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<div style="width: 80%;">
+  <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChart"></canvas>
+</div>
+
+    <label for="year">Année</label>
+    <select name="year" id="year">
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+    </select>
+
+    <label for="month">Mois</label>
+        <select name="month" id="month">
+            <option> </option>
+            <option value="01">janvier</option>
+            <option value="02">février</option>
+            <option value="03">mars</option>
+            <option value="04">avril</option>
+            <option value="05">mai</option>
+            <option value="06">juin</option >
+            <option value="07">juillet</option>
+            <option value="08">août</option>
+            <option value="09">septembre</option>
+            <option value="10">octobre</option>
+            <option value="11">novembre</option>
+            <option value="12">décembre</option>
+        </select>
+
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+{% endblock %}

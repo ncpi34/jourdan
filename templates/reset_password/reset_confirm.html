@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% include "important/navbar.html" %}
+{% endblock %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+            <div class="container w-3/4 h-screen mx-auto py-6 text-center ">
+                    <div>
+                        <h3 class="py-8 text-xl">Changer de mot de passe</h3>
+                        <form method="POST">
+                            {% csrf_token %}
+                         {% for field in form %}
+                            <div class="flex justify-center mb-2">
+                                <div class="mb-4 relative w-3/4">
+                                    {{ field }}
+                                    <label for="{{ field.auto_id }}" class="label absolute mb-0 -mt-2 pt-4 pl-3 leading-tighter text-gray-400 text-base mt-2 cursor-text" >
+                                        {{ field.label_tag  }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <ul class="text-l">
+                            <li>Au minimum 8 charactères</li>
+                            <li>Pas trop commun</li>
+                            <li>Pas seulement des chiffres<li>
+                        </ul>
+
+                            <button type="submit"
+                                    class="mt-5 px-6 py-2 text-xs font-medium leading-6 text-center text-white uppercase transition bg-green-500 rounded-full shadow ripple hover:shadow-lg hover:bg-green-600 focus:outline-none">
+                                Modifier
+                            </button>
+                        </form>
+                    </div>
+            </div>
+{% endblock %}

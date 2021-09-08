@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'important/navbar.html' %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/order-summary.css' %}">
+{% endblock %}
+{% block content %}
+<div id="orderSummaryAts">
+	<div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen">
+            {% if histories %}
+                <h4 class="text-center text-2xl">Commandes effectuées</h4>
+		<table class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5">
+			<thead class="text-white">
+            {% for history in histories %}
+				<tr class="bg-orange flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
+					<th class="p-3 text-center">Date</th>
+					<th class="p-3 text-center">Statut</th>
+					<th class="p-3 text-center" >Total TTC</th>
+				</tr>
+            {% endfor %}
+			</thead>
+			<tbody class="flex-1 sm:flex-none">
+            {% for history in histories %}
+                    <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+                        <td class="text-yellow-700 text-center border-grey-light border hover:bg-gray-100 p-3">
+                            <a href="{{ history.get_absolute_url }}" class="product_url link hover:underline">
+                                 {{ history.date }}
+                            </a>
+                        </td>
+                        <td class="text-center border-grey-light border hover:bg-gray-100 p-3 truncate">{{ history.format_status }}</td>
+                        <td class="text-center border-grey-light border hover:bg-gray-100 p-3 truncate">{{ history.get_total_cost }}€</td>
+            {% endfor %}
+				</tr>
+			</tbody>
+		</table>
+        {% else %}
+          <div class="text-center">
+              <h4 class="text-2xl py-8">Vous n'avez pas d'historique ...</h4>
+              <h4 class="text-xl py-8">Pourquoi ne pas aller faire quelques achats ?</h4>
+              <a href="{% url 'website:products' %}"
+                       class="bg-transparent hover:bg-blue-700 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-700 hover:border-transparent rounded">
+                  Voir les produits
+              </a>
+          </div>
+        {% endif %}
+	</div>
+</div>
+{% endblock %}

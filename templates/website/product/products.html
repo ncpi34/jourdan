@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load custom_input_step %}
+
+{% block navbar %}
+    {% include "important/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+
+    <!--container layout-->
+      <div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen"  id="productsSite">
+    {% if articles %}
+
+        <div class="flex flex-wrap justify-between max-w-6xl mx-auto px-4">
+            <!-- hamburger -->
+            <div>
+                <button v-on:click="toggleOptionProducts" type="button"
+                        class="inline-flex justify-center w-full input-custom border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500"
+                         aria-expanded="true" aria-haspopup="true">
+                    <i class="material-icons" ref="hamburgerProducts">menu</i>
+                </button>
+
+                {% include "important/sidenav_products.html" %}
+            </div>
+            <!-- hamburger -->
+            <span>
+                {% include "important/searchbar.html" %}
+            </span>
+            <span>
+                {% include "important/filter_by.html" %}
+            </span>
+        </div>
+
+        <div class="flex flex-wrap gap-4 justify-center">
+
+              {% for article in articles %}
+                          <div class="items-center shadow-xl bg-gray-100 hover:bg-gray-300 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105  bg-white border rounded-lg overflow-hidden my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4">
+
+                              <!-- icon News -->
+                              {% if article.novelties %}
+                                  <div class="flex right-0 z-10 absolute">
+                                    <img  class="fill-current flex right-0" src="/media/icons/new.svg" style="width: 46px" alt="Nouveautés">
+                                  </div>
+                            {% endif %}
+                            <!-- icon News -->
+
+                            <!-- icon Freeze -->
+                              {% if article.group.id == 20 %}
+                                  <div class="flex right-0 z-10 absolute">
+                                    <img  class="fill-current flex right-0" src="/media/icons/groups/20.svg" style="width: 46px" alt="Nouveautés">
+                                  </div>
+                            {% endif %}
+                            <!-- icon Freeze -->
+
+                             <a href="{{ article.get_absolute_url }}">
+                              <img class="object-scale-down h-48 w-full" alt="photo" src="{{ article.get_img }}"/>
+                            </a>
+                            <div class="px-6 py-6 text-center">
+
+                                <div class="font-bold text-xl  sm:h-auto md:h-24 lg:h-24 xl:24">
+                                    {{ article.name|title }}
+                                </div>
+
+                                <div class="w-100">
+                                    <span class="product-price">
+                                        {{ article.price_with_taxes }}€ {% if article.price_type == 1 %} /KG {% endif %}
+                                    </span>
+                                </div>
+
+                                <div>
+
+                                </div>
+
+                                <a href="{{ article.get_absolute_url }}" class="flex justify-center">
+                                    <button class="text-center text-yellow-700 link hover:underline">
+                                       voir plus de détails
+                                    </button>
+                                </a>
+
+                            </div>
+
+                          <div>
+                          </div>
+
+                              <form v-on:submit.prevent="addToCart($event)" data-id="{{ article.id }}"
+                                    data-url="{% url 'cart:cart_add' product_id=article.id %}"  method="post"
+                                    class="flex mb-3">
+                                {% csrf_token %}
+                                  <div class="flex justify-center">
+                                      <input style="height:3.5ch;font-size: 3ch;" required class="rounded w-1/2 input-custom"
+                                               data-url="{% url 'cart:cart_add' product_id=article.id %}"
+                                               :ref="'{{ article.id }}'" type="number" min="0" max="{{ article.stock }}" placeholder="0" step="{{ article.price_type|custom_input_step }}"/>
+                                      <button class="form-control btn btn-orange" type="submit">
+                                                <i :ref="'f_'+'{{ article.id }}'" class="material-icons">add_shopping_cart</i>
+                                      </button>
+                                  </div>
+                            </form>
+
+                          </div>
+              {% endfor %}
+        </div>
+
+       <!-- Pagination-->
+        {% if is_paginated %}
+            {% load proper_paginate %}
+            {% load url_replace %}
+            <ul class="flex justify-center list-reset border border-grey-light rounded w-auto font-sans space-x-1">
+                {% if page_obj.number == 1 %}
+                    <li class="disabled block hover:text-white hover:bg-blue-700 text-blue rounded cursor-pointer border-r border-grey-light px-3 py-2"><span>⇤</span></li>
+                {% else %}
+                    <li><a class="block hover:text-white hover:bg-blue-700 text-blue cursor-pointer border-r rounded border-grey-light px-3 py-2"
+                           href="?{% url_replace request 'page' 1 %}">⇤</a></li>
+                {% endif %}
+                {% if page_obj.has_previous %}
+                    <li><a class="block hover:text-white hover:bg-blue-700 text-blue cursor-pointer border-r rounded border-grey-light px-3 py-2"
+                           href="?{% url_replace request 'page' page_obj.previous_page_number %}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator|proper_paginate:page_obj.number %}
+                    {% if page_obj.number == i %}
+                        <li class="block bg-blue-700 hover:text-white hover:bg-blue text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2">
+                            <span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                        <li><a class="block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"
+                               href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li><a class="block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"
+                           href="?{% url_replace request 'page' page_obj.next_page_number %}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"><span>&raquo;</span></li>
+                {% endif %}
+                {% if page_obj.number == paginator.num_pages %}
+                    <li class="disabled block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"><span>⇥</span></li>
+                {% else %}
+                    <li><a class="block hover:text-white hover:bg-blue-700 text-blue cursor-pointer rounded border-r border-grey-light px-3 py-2"
+                           href="?{% url_replace request 'page' paginator.num_pages %}">⇥</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+       <!-- Pagination-->
+
+        {% else %}
+            <div class="py-10 text-center">
+                <h4 class="text-2xl mt-6">Pas d'articles pour le moment ...</h4>
+            </div>
+        {% endif %}
+          </div>
+
+
+{% endblock content %}
+
+{% block extrascripts %}
+    <script src="{% static 'js/Vue/products.js' %}"></script>
+{% endblock %}

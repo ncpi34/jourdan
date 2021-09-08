@@ -1,0 +1,10 @@
+{% load static %}
+<style>
+      .loading {
+        background: transparent url('{% static 'utils/spinner.gif' %}') center no-repeat;
+    }
+
+</style>
+<div class="flex justify-center">
+    <img class="loading" src="{% static 'utils/spinner.gif' %}">
+</div>

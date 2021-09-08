@@ -1,0 +1,43 @@
+/* base */
+    .fade {
+      backface-visibility: hidden;
+        display: none;
+      z-index: 1;
+    }
+
+    /* moving */
+    .fade-move {
+      transition: all 600ms ease-in-out 50ms;
+    }
+    .fade-enter,
+    .fade-leave-to {
+      opacity: 0;
+    }
+    .fade-enter-active{
+        transition: all 400ms ease-out;
+    }
+    .fade-leave-active {
+      transition: all 200ms ease-in;
+      position: relative;
+      z-index: 0;
+    }
+    .has-dropdown li{
+      display: none;
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px 16px;
+      z-index: 1;
+    }
+    .is-open li{
+      display:block;
+    }

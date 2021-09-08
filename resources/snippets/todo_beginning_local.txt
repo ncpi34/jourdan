@@ -1,0 +1,23 @@
+create virtualenv
+
+install libraries =>
+    pip install -r requirements.txt
+
+migrations =>
+    python manage.py makemigrations account cart order payment website
+    python manage.py migrate
+
+create superuser =>
+    python manage.py createsuperuser
+
+got to panel admin =>
+    http://127.0.0.1:8000/admin/
+    add "plafonds drive & livraison"
+
+go api-cash-register =>
+ (add groups, add legal_form, add products, enterprise type,)
+
+CB test
+Numéro carte : 4525485465452100
+Expire fin : 01 2022
+3 numéros au dos de la carte : 100

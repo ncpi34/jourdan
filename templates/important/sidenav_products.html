@@ -1,0 +1,32 @@
+<!-- menu -->
+<!-- v-show="showOptionProducts" -->
+<div v-show="showOptionProducts" v-cloak class="text-black origin-top-right absolute mt-2 w-48 rounded-md shadow-xl bg-gray-200 ring-1 ring-black ring-opacity-5 z-40" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <ul class="py-1" role="none">
+         {% for item in menu %}
+
+             <li class="">
+                <a href="{% url 'website:products_by_group' item.id %}"
+                 class="inline-block  block px-4 py-2 text-sm hover:text-blue-700 font-bold" role="menuitem" tabindex="-1" id="menu-item-0">
+                  <span class="inline-block ">{{ item.name|title }}</span>
+                </a>
+                 <span v-on:click="toggleSubmenuOptionProducts('ul'+{{ item.id }})"
+                       class="material-icons inline-block cursor-pointer">
+                     arrow_drop_down
+                 </span>
+             </li>
+
+             <ul :ref="'ul'+{{ item.id }}" class="hidden bg-gray-200">
+              {% for submenu in item.submenu %}
+                  <li>
+                      <a href="{% url 'website:products_by_family' submenu.id %}"
+                         class="block px-4 py-2 text-sm hover:text-blue-700">
+                          <span>{{ submenu.name|title|truncatechars:35 }}</span>
+                      </a>
+                  </li>
+              {% endfor %}
+             </ul>
+
+         {% endfor %}
+    </ul>
+</div>
+<!-- menu -->

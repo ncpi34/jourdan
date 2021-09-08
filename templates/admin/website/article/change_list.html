@@ -1,0 +1,69 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('myChartArticle').getContext('2d');
+
+  // Sample data
+  let chartData = {{ chart_data | safe }};
+  const Data = () => {
+      let arr = []
+      chartData.forEach( ( val, key) => {
+          arr[key] = val.nb_views
+      })
+      return arr
+    }
+    const Labels = (arg) => {
+        let arr = []
+        chartData.forEach( ( val, key) => {
+            arr[key] = val.name
+
+        })
+        return arr
+    }
+
+
+  // Render the chart
+  const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+              labels: Labels(),
+              datasets: [
+                {
+                  label: "vues",
+                  backgroundColor: "#3e95cd",
+                  data: Data()
+                }
+              ]
+            },
+      options: {
+          responsive: true,
+          legend: {display: false},
+          title: {
+              display: true,
+              text: 'Produits les plus consultés'
+          }
+      }
+  })
+});
+
+
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<div style="width: 80%;">
+  <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChartArticle"></canvas>
+</div>
+
+
+
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+{% endblock %}

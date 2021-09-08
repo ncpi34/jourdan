@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load custom_input_step %}
+
+{% block navbar %}
+    {% include "important/navbar.html" %}
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+    <!--Main layout-->
+
+    <!--img -->
+    <div class="justify-center flex">
+        <img src="/media/img/home-orange.png"   class="object-cover w-full" alt="">
+    </div>
+
+    <!-- head -->
+    <div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12" id="homeAts">
+
+    <!-- Includes -->
+        {% include 'modal-tailwind/condition.html' %}
+    <!-- Includes -->
+
+        <div class="flex flex-wrap justify-between py-8">
+            <div>
+                {% include 'important/searchbar.html' %}
+            </div>
+
+            <div>
+                <a href="{% url 'account:register' %}">
+                    <button class="btn btn-orange">
+                        Devenir client
+                    </button>
+                </a>
+            </div>
+
+        </div>
+        <!-- END head -->
+    {% if grocery_txt %}
+        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+            {% if grocery_txt.picture %}
+                <img src="{{ grocery_txt.picture.url }}" class="object-scale-down" alt="photo épicerie">
+            {% endif %}
+                <div>
+                    <div class="mb-5 text-center uppercase font-bold title">
+                        <hr class="mb-5">
+                        {{ grocery_txt.title|linebreaksbr }}
+                            <hr class="mt-5">
+                    </div>
+                    <p class="text-center leading-relaxed">{{ grocery_txt.text|linebreaksbr }}</p>
+
+                </div>
+        </div>
+    {% endif %}
+
+    {% if cart_txt %}
+        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+                <div>
+                    <hr class="mb-5">
+                    <h4 class="mb-5 text-center uppercase font-bold title">{{ cart_txt.title|linebreaksbr }}</h4>
+                    <hr class="mb-5">
+                    <p class="text-center leading-relaxed">{{ cart_txt.text|linebreaksbr }}</p>
+                </div>
+            {% if cart_txt.picture %}
+                <img src="{{ cart_txt.picture.url }}" class="object-scale-down" alt="photo panier">
+            {% endif %}
+        </div>
+    {% endif %}
+
+        <div class="flex flex-wrap gap-4 justify-center py-8">
+            {% for article in articles %}
+                <div class="items-center shadow-xl bg-gray-100 hover:bg-gray-300 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105  bg-white border rounded-lg overflow-hidden my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4">
+
+                              <!-- icon News -->
+                                  {% if article.novelties %}
+                                      <div class="flex right-0 z-10 absolute">
+                                        <img  class="fill-current flex right-0" src="/media/icons/new.svg" style="width: 46px" alt="Nouveautés">
+                                      </div>
+                                  {% endif %}
+                              <!-- icon News -->
+
+                             <a href="{{ article.get_absolute_url }}">
+                              <img class="object-scale-down h-48 w-full" alt="photo" src="{{ article.get_img }}"/>
+                            </a>
+                            <div class="px-6 py-6 text-center">
+
+                                <div class="font-bold text-xl  sm:h-auto md:h-24 lg:h-24 xl:24">
+                                    {{ article.name|title }}
+                                </div>
+
+                                <div class="w-100">
+                                    <span class="product-price">
+                                        {{ article.price_with_taxes }}€ {% if article.price_type == 1 %} /KG {% endif %}
+                                    </span>
+                                </div>
+                                <a href="{{ article.get_absolute_url }}" class="flex justify-center">
+                                    <button class="text-center text-yellow-700 link hover:underline">
+                                       voir plus de détails
+                                    </button>
+                                </a>
+                            </div>
+                          <div>
+                          </div>
+                              <form v-on:submit.prevent="addToCart($event)" data-id="{{ article.id }}"
+                                    data-url="{% url 'cart:cart_add' product_id=article.id %}"  method="post"
+                                    class="flex mb-3">
+                                {% csrf_token %}
+                                  <div class="flex justify-center">
+                                      <input style="height:3.5ch;font-size: 3ch;" required class="rounded w-1/2 input-custom"
+                                               data-url="{% url 'cart:cart_add' product_id=article.id %}"
+                                               :ref="'{{ article.id }}'" type="number" min="0" max="{{ article.stock }}" placeholder="0" step="1"/>
+                                      <button class="form-control btn btn-orange" type="submit">
+                                                <i :ref="'f_'+'{{ article.id }}'" class="material-icons">add_shopping_cart</i>
+                                      </button>
+                                  </div>
+                            </form>
+                          </div>
+            {% endfor %}
+        </div>
+        {% if delivery_txt %}
+            <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+            {% if delivery_txt.picture %}
+                <img src="{{ delivery_txt.picture.url }}" class="object-scale-down" alt="photo épicerie">
+            {% endif %}
+                <div>
+                    <div class="mb-5 text-center uppercase font-bold title">
+                        <hr class="mb-5">
+                        {{ delivery_txt.title|linebreaksbr }}
+                        <hr class="mt-5">
+                    </div>
+                    <p class="text-center leading-relaxed">{{ delivery_txt.text|linebreaksbr }}</p>
+                </div>
+        </div>
+        {% endif %}
+</div>
+{% endblock %}
+
+{% block extrascripts %}
+    <script src="{% static 'js/Vue/home.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load custom_input_step %}
+
+{% block navbar %}
+    {% include "important/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+      <div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen" id="favoritesSite">
+          {% include 'modal-tailwind/delete.html'%}
+
+          {% if articles %}
+
+              {% for group in groups %}
+                  <div class="text-center">
+                    <h1 class="italic text-2xl text-center bold">{{ group.name|title }}</h1>
+                    <div class="flex flex-wrap justify-center">
+                      {% for article in articles %}
+                          {% if group.id == article.group.id %}
+                                      <div class="items-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105  bg-white border rounded-lg overflow-hidden my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4">
+
+                                          <!-- icon News -->
+                                          {% if article.novelties %}
+                                              <div class="flex right-0 z-10 absolute">
+                                                <img  class="fill-current flex right-0" src="/media/icons/new.svg" style="width: 46px" alt="Nouveautés">
+                                              </div>
+                                          {% endif %}
+                                        <!-- icon News -->
+
+                                        <!-- icon Freeze -->
+                                          {% if article.group.id == 20 %}
+                                              <div class="flex right-0 z-10 absolute">
+                                                <img  class="fill-current flex right-0" src="/media/icons/groups/20.svg" style="width: 46px" alt="Nouveautés">
+                                              </div>
+                                        {% endif %}
+                                        <!-- icon Freeze -->
+
+                                       <!-- icon suppress -->
+                                              <div class="flex left-0 z-10 absolute"
+                                                   v-on:click="toggleModalDelete($event)"
+                                                   data-url="{% url 'website:cancel_favorites' pk=article.id %}"
+                                                   data-toggle="modal"
+                                                   data-target="#deleteItemModal"
+                                                   data-message="Voulez-vous supprimer définitivement ce favori ?"
+                                                   title="supprimer un favori"
+                                              >
+                                                  <i class="material-icons text-red-700 cursor-pointer">delete_forever</i>
+            {#                                    <img  class="fill-current flex right-0" src="/media/icons/groups/20.svg" style="width: 46px" alt="Nouveautés">#}
+                                              </div>
+                                        <!-- icon suppress -->
+
+                                         <a href="{{ article.get_absolute_url }}">
+                                          <img class="object-scale-down h-48 w-full" alt="photo" src="{{ article.get_img }}"/>
+                                        </a>
+                                        <div class="px-6 py-4">
+
+                                            <div class="font-bold text-xl mb-2 text-center sm:h-auto md:h-24 lg:h-24 xl:24">
+                                                {{ article.name|title }}
+                                            </div>
+
+                                            <div class="w-100">
+                                                <span class="product-price">
+                                                    {{ article.price_with_taxes }}€ {% if article.price_type == 1 %} /KG {% endif %}
+                                                </span>
+                                            </div>
+
+
+                                            <a href="{{ article.get_absolute_url }}" class="flex justify-center">
+                                                <button class="text-center text-yellow-700 link hover:underline">
+                                                   voir plus de détails
+                                                </button>
+                                            </a>
+
+                                        </div>
+
+                                          <form v-on:submit.prevent="addToCart($event)" data-id="{{ article.id }}"
+                                                    data-url="{% url 'cart:cart_add' product_id=article.id %}"  method="post"
+                                                    class="flex py-6">
+                                                {% csrf_token %}
+                                              <div class="flex justify-center">
+                                                  <input style="height:3.5ch;font-size: 3ch;" required class="rounded w-1/2 input-custom"
+                                                               data-url="{% url 'cart:cart_add' product_id=article.id %}"
+                                                               :ref="'{{ article.id }}'" type="number" min="0" max="{{ article.stock }}" placeholder="0" step="{{ article.price_type|custom_input_step }}"/>
+                                                  <button class="form-control bg-transparent font-semibold  py-2 px-4 btn btn-orange" type="submit">
+                                                                <i :ref="'f_'+'{{ article.id }}'" class="material-icons">add_shopping_cart</i>
+                                                  </button>
+                                              </div>
+                                          </form>
+
+                                      </div>
+
+                          {% endif %}
+                    {% endfor %}
+                    </div>
+                  </div>
+
+              {% endfor %}
+
+
+        {% else %}
+            <div class="text-center">
+               <h4 class="text-2xl py-8">Vous n'avez pas de favoris ...</h4>
+                <h4 class="text-xl py-8">Pourquoi ne pas aller faire quelques achats ?</h4>
+                <a href="{% url 'website:products' %}"
+                   class="bg-transparent hover:bg-blue-700 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-700 hover:border-transparent rounded">
+                    Voir les produits
+                </a>
+
+            </div>
+        {% endif %}
+          </div>
+{% endblock content %}
+
+{% block extrascripts %}
+    <script src="{% static 'js/Vue/favorites.js' %}"></script>
+{% endblock %}

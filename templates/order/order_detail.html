@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block navbar %}
+    {% include 'important/navbar.html' with title_pager="Résumé"  %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/order-detail.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen">
+    <h4 class="text-center mt-5 text-lg" id="title_page" >Commande du {{ object.date }}</h4>
+
+        <table class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5">
+			<thead class="text-white text-center">
+            {% for item in object.get_articles %}
+				<tr class="bg-orange flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
+					<th class="p-3">Produit</th>
+                    <th class="p-3">Prix Unitaire</th>
+                    <th class="p-3">Quantité</th>
+					<th class="p-3">Total</th>
+				</tr>
+            {% endfor %}
+			</thead>
+			<tbody class="flex-1 sm:flex-none">
+                {% for item in object.get_articles %}
+                    <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0 text-center">
+                            <td class="border-grey-light border hover:bg-gray-100 p-3 ">{{ item.name|title  }}</td>
+                            <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">{{ item.get_unit_cost_with_taxes }}€{% if item.price_type == 1 %}/KG{% endif %}</td>
+                            <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+                                {{ item.quantity }}
+                            </td>
+                            <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">{{ item.get_cost_with_taxes }}€</td>
+				    </tr>
+                {% endfor %}
+			</tbody>
+		</table>
+
+        <div class="flex flex-wrap justify-between">
+            <h4 class="text-lg">Coût total: {{ object.get_total_cost }}€</h4>
+            <form action="{% url 'order:generate_pdf' object.id %}" method="post"
+                          class="text mb-5">
+                        {% csrf_token %}
+                <button type="submit"
+                                class="btn btn-orange">
+                    <i class="material-icons">picture_as_pdf</i>
+                    <span>PDF</span>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

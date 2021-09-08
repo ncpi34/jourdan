@@ -1,0 +1,66 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/forgot_pwd.css' %}">
+<div v-cloak v-show="showModalForgotPwd"
+     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-6xl">
+        <!--content-->
+        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+            <h1 class="text-4xl font-black mb-4">Mot de passe oublié ?</h1>
+            <button class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    v-on:click.prevent="toggleModalForgotPwd()">
+              <span class="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
+                ×
+              </span>
+            </button>
+          </div>
+          <!--body-->
+          <div class="relative p-6 flex-auto">
+
+              <!-- Success msg -->
+              <div v-if="serverSuccess" class="bg-green-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
+                      <strong class="text-sm">[[success_msg]]</strong>
+              </div>
+              <!-- Success msg -->
+
+              <!-- Danger msg -->
+              <div v-if="serverError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                  <strong class="text-sm">[[err_msg]]</strong>
+              </div>
+             <!-- Danger msg -->
+
+            <form method="POST" v-on:submit.prevent="checkFormForgotPwd($event)" enctype="multipart/form-data"
+                  data-url="{% url 'account:forgot_password' %}">
+            {% csrf_token %}
+                <div class="mb-4 relative" v-if="errors.length">
+                    <b>Corrigez ces erreurs:</b>
+                    <ul>
+                      <li class="text-red-500" v-for="error in errors">[[ error ]]</li>
+                    </ul>
+                </div>
+                <div class="mb-4 relative">
+                    <input autofocus
+                          class="input-custom w-full"
+                          id="email"
+                          v-model="email"
+                          type="email"
+                          name="username" placeholder="Email">
+                </div>
+                <button
+                  type="submit"
+                    class="w-full justify-center inline-flex items-center btn btn-orange">
+                  <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Soumettre
+                </button>
+        </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div v-show="showModalForgotPwd" class="opacity-25 fixed inset-0 z-40 bg-black" v-cloak></div>
+

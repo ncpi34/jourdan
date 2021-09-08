@@ -1,0 +1,13 @@
+<div class="relative" id="filterBy">
+      <form action="" method="get" ref="filterBySelect">
+          <select name="ordering" id="filterBy" class="w-full input-custom" v-model="filterByVal"
+                  v-on:change="onChangeFilter($event)">
+              <option class="py-1" value="" >Trier par</option>
+              <option class="py-1" value="name">Nom, A à Z</option>
+              <option class="py-1" value="-name">Nom, Z à A</option>
+              <option class="py-1" value="price_with_taxes">Prix croissant</option>
+              <option class="py-1" value="-price_with_taxes">Prix décroissant</option>
+          </select>
+      </form>
+</div>
+

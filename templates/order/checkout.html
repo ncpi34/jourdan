@@ -1,0 +1,354 @@
+{% extends 'website/../base.html' %}
+
+{% load static %}
+{%  load mathfilters %}
+
+{% block navbar %}
+    {% include 'important/navbar.html'  %}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+
+    .stripe-button-el{
+        display: none;
+    }
+</style>
+    <div id="checkoutAts">
+        {% include 'modal-tailwind/address_create.html'%}
+        {% include 'modal-tailwind/address_update.html'%}
+        {% include 'modal-tailwind/delete.html'%}
+
+    <div class="container mx-auto" >
+        <div class="flex flex-wrap">
+            <div class="sm:w-full md:w-2/3 lg:w-3/4 xl:w-4/6 mb-4">
+              <h2 class="my-5 text-2xl text-center">Informations</h2>
+                <form method="POST" class="card-body" >
+                      {% csrf_token %}
+                <h3 class="text-xl text-center mb-3">Adresse Livraison</h3>
+                    {% if not shipping_addresses %}
+                        <div class="flex justify-center hideable_billing_form">
+                            <button
+                                    v-on:click.prevent="showModalCreateAddress = true"
+                                    class="mt-6 mb-6  inline-flex items-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full space-x-2">
+                                <i class="far fa-plus-square"></i>
+                                <span>Ajouter adresse facturation</span>
+                            </button>
+                        </div>
+                      {% else %}
+                        <div class="flex justify-center space-x-2 mb-2 hideable_shipping_form">
+                        {% for shipping in shipping_addresses %}
+                            <div class="max-w-sm rounded overflow-hidden shadow-lg text-center">
+                                <div class="px-6 py-4">
+                                    {% if shipping.default_address %}
+                                        <i class="fas fa-check-circle text-green-700"></i>
+                                        Défault
+                                        <hr>
+                                    {% else %}
+                                         <i class="fas fa-times text-red-700"></i>
+                                         Défault
+                                         <hr>
+                                    {% endif %}
+                                        <p class="text-gray-700 text-base">{{ shipping.user.last_name }}  {{ shipping.user.first_name }}</p>
+
+                                        <p class="text-gray-700 text-base">{{ shipping.street }}</p>
+                                        <p class="text-gray-700 text-base">{{ shipping.apartment }}</p>
+                                        <p class="text-gray-700 text-base">{{ shipping.zip }}</p>
+                                        <p class="text-gray-700 text-base">{{ shipping.city }}</p>
+                                    </div>
+                                  <div class="px-6 pt-4 pb-2">
+                                        <input class="custom-control custom-checkbox"
+                                               value="{{ shipping.id }}"
+                                             type="checkbox"  name="delivery_to" >
+                                        <label class="custom-control-label" for="delivery_to">
+                                            Livrer à cette adresse
+                                        </label>
+                                  </div>
+                                  <div class="px-6 pt-4 pb-2">
+                                        <input class="custom-control custom-checkbox"
+                                               type="checkbox"  name="use_shipping_for_billing"
+                                               id="use_shipping_for_billing" onchange="useDefaultBillingAddress(this);">
+                                        <label class="custom-control-label" for="use_shipping_for_billing">
+                                            Utiliser pour la facturation
+                                        </label>
+                                  </div>
+                                <div class="px-6 pt-4 pb-2">
+                                      <a href="javascript:void(0)"
+                                           data-toggle="modal"
+                                           data-url="{% url 'account:update_address' pk=shipping.id %}"
+                                           v-on:click.prevent="updateAddress($event)"
+                                         class="inline-block text-yellow-700 rounded mr-2"
+                                        >
+                                            <i class="far fa-edit"></i>
+                                            <p>Modifier</p>
+                                      </a>
+                                      <a href="javascript:void(0)" data-toggle="modal"
+                                           class="confirm-delete inline-block  text-red-700"
+                                           data-url="{% url 'account:delete_address' pk=shipping.id %}"
+                                           data-message="Êtes-vous sûr de supprimer l'adresse ?"
+                                          v-on:click.prevent="deleteModal($event)"
+                                           >
+                                            <i class="far fa-trash-alt"></i>
+                                            <p>Supprimer</p>
+                                        </a>
+                                  </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+
+                    {% endif %}
+                      <hr>
+                          <h3 class="text-center text-2xl py-6">Adresse Facturation</h3>
+                    {% if not billing_addresses %}
+                    <div class="flex justify-center hideable_billing_form">
+                        <button
+                                v-on:click.prevent="showModalCreateAddress = true"
+                                class="mt-6 mb-6  inline-flex items-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full space-x-2">
+                            <i class="far fa-plus-square"></i>
+                            <span>Ajouter adresse facturation</span>
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="flex justify-center space-x-2 mb-2 hideable_billing_form">
+                        {% for shipping in billing_addresses %}
+                            <div class="max-w-sm rounded overflow-hidden shadow-lg text-center">
+                                <div class="px-6 py-4">
+                                    {% if shipping.default_address %}
+                                        <i class="fas fa-check-circle text-green-700"></i>
+                                        Défault
+                                        <hr>
+                                    {% else %}
+                                         <i class="fas fa-times text-red-700"></i>
+                                         Défault
+                                         <hr>
+                                    {% endif %}
+                                        <p class="text-gray-700 text-base">{{ shipping.user.last_name }}  {{ shipping.user.first_name }}</p>
+
+                                        <p class="text-gray-700 text-base">{{ shipping.street }}</p>
+                                        <p class="text-gray-700 text-base">{{ shipping.apartment }}</p>
+                                        <p class="text-gray-700 text-base">{{ shipping.zip }} {{ shipping.city }}</p>
+                                    </div>
+                                    <div class="px-6 pt-4 pb-2">
+                                        <input class="custom-control custom-checkbox"
+                                             type="checkbox"  name="billing_to" value="{{ shipping.id }}">
+                                        <label class="custom-control-label" for="billing_to">
+                                            Utiliser cette adresse
+                                        </label>
+                                    </div>
+                                <div class="px-6 pt-4 pb-2">
+                                      <a href="javascript:void(0)"
+                                           data-toggle="modal"
+                                           data-url="{% url 'account:update_address' pk=shipping.id %}"
+                                           v-on:click.prevent="updateAddress($event)"
+                                         class="inline-block text-yellow-700 rounded mr-2"
+                                        >
+                                            <i class="far fa-edit"></i>
+                                            <p>Modifier</p>
+                                        </a>
+                                      <a href="javascript:void(0)" data-toggle="modal"
+                                           class="confirm-delete inline-block  text-red-700"
+                                           data-url="{% url 'account:delete_address' pk=shipping.id %}"
+                                           data-message="Êtes-vous sûr de supprimer l'adresse ?"
+                                          v-on:click.prevent="deleteModal($event)"
+                                           >
+                                            <i class="far fa-trash-alt"></i>
+                                            <p>Supprimer</p>
+                                        </a>
+                                  </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+                      <hr class="mb-4">
+                    <div class="text-center">
+                        <button
+                                class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded"
+                                type="submit">
+                            Continuer
+                        </button>
+                    </div>
+                    </form>
+
+                  </div>
+
+                <div class="flex content-center sm:w-full md:w-1/3 lg:w-1/4 xl:w-2/6 mt-10 mb-4">
+                  {% include "order/order_snippet.html" %}
+                </div>
+                </div>
+              </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block extrascripts %}
+<script>
+const useDefaultShippingAddress = (e) => {
+let shipping_form = document.querySelector('.hideable_shipping_form');
+     const {checked} = e;
+     if (checked) {
+    shipping_form.style.display = 'none'
+  } else {
+    shipping_form.style.display = 'block'
+  }
+}
+
+const useDefaultBillingAddress = (e) => {
+let billing_form = document.querySelector('.hideable_billing_form');
+     const {checked} = e;
+     if (checked) {
+    billing_form.style.display = 'none'
+  } else {
+    billing_form.style.display = 'block'
+  }
+}
+</script>
+
+<script>
+const checkout  = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#checkoutAts',
+      props:{},
+      data: {
+          mode: null,
+          loading: false,
+          dialogFormVisible: false,
+          showModalCreateAddress: false,
+          showModalUpdateAddress: false,
+          showModalDelete: false,
+          submitForm: false,
+
+          urlCreate: "",
+          HTTP_METHOD:null,
+          urlUpdate: "",
+
+           // DATA
+          formModel: {},
+          street: null,
+          apartment: null,
+          zip: null,
+          city: null,
+          address_type: null,
+          default_address: null,
+
+          // General
+          errors:[],
+          success_msg: "",
+          err_msg: "",
+          serverSuccess: false,
+          serverError: false,
+          currentURL:window.location.href,
+
+      },
+        mounted() {
+            this.reset();
+          },
+    computed: {
+            modelsArray() {
+              return Object.values(this.models);
+            },
+            modalTitle() {
+              return `${ this.mode } Adresse`;
+            }
+          },
+      methods: {
+          reset() {
+              this.dialogFormVisible = false;
+              this.loading = false;
+              this.showModalDelete = false;
+              this.formModel = {};
+          },
+          showMessage(){
+              if (!this.submitForm) console.log('false')
+          },
+          toggleModalCreateAddress: function () {
+              this.showModalCreateAddress = !this.showModalCreateAddress;
+          },
+          deleteModal: function (evt) {
+              this.showModalDelete = !this.showModalDelete;
+              const target = evt.currentTarget;
+              setTimeout(() => {
+                  document.getElementById("deleteMsg").innerHTML = target.dataset.message;
+                  document.querySelector('#deleteModalForm').action = target.dataset.url;
+              }, 100);
+          },
+          updateAddress: function (evt) {
+              this.HTTP_METHOD = "edit";
+              this.urlUpdate = evt.currentTarget.dataset.url;
+              let xhr = new XMLHttpRequest();
+              xhr.open("GET", this.urlUpdate, true);
+              xhr.send(null);
+              xhr.onload = async () => {
+                  if (xhr.status === 200) {
+                      let result = await JSON.parse(xhr.response);
+                      for (let item in result) {
+                          if (result.hasOwnProperty(item)) {
+                              this.formModel[item] = result[item];
+                          }
+                      }
+                  }
+              };
+              setTimeout(() => {
+                  this.showModalUpdateAddress = !this.showModalUpdateAddress;
+              }, 300)
+          },
+          checkFormCheckout: () => {
+
+
+          },
+          checkForm: function () {
+              if (this.formModel.street && this.formModel.apartment && this.formModel.zip && this.formModel.city && this.formModel.address_type) {
+                  if (!this.formModel.default_address) this.formModel.default_address = false;
+                  if (this.showModalCreateAddress) this.HTTP_METHOD = "create"
+                  this.postData(this.formModel, this.HTTP_METHOD);
+              }
+
+              if (!this.formModel.street) {
+                  this.errors.push('Rue requise');
+              }
+              if (!this.formModel.apartment) {
+                  this.errors.push('Résidence / appartement requis');
+              }
+              if (!this.formModel.zip) {
+                  this.errors.push('Code Postal requis');
+              }
+              if (!this.formModel.city) {
+                  this.errors.push('Ville requise');
+              }
+              if (!this.formModel.address_type) {
+                  this.errors.push("Type d'adresse requis");
+              }
+          },
+          postData: function (data, type) {
+              let url;
+              if (type === 'create') {
+                  url = this.urlCreate;
+              } else {
+                  url = this.urlUpdate;
+              }
+              axios({
+                  method: "POST",
+                  url: url, //django path name
+                  headers: {'X-CSRFTOKEN': '{{ csrf_token }}', 'Content-Type': 'application/json'},
+                  data: data,//data
+              }).then(response => {
+                  this.serverSuccess = true;
+                  this.success_msg = response.data['msg'];
+                  this.redirectAfterSuccess();
+
+              }).catch(err => {
+                  this.serverError = true;
+                  this.err_msg = err.response.data['err'];
+              });
+          },
+          redirectAfterSuccess: function () {
+              setTimeout(() => {
+                  window.location.href = this.currentURL;
+                  // window.location.replace(this.currentURL);
+              }, 3000)
+          }
+      }
+    });
+
+</script>
+{% endblock %}

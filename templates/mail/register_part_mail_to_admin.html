@@ -1,0 +1,23 @@
+{% autoescape off %}
+Un utilisateur vient de faire une demande de création de compte sur le site,
+C'est un particulier,
+Veuillez trouver les informations de cet utilisateur:
+
+    Infos:
+
+    Nom utilisateur: {{ user.username }}
+    Email: {{ user.email }}
+    Telephone: {{ user.phone }}
+    Nom: {{ user.last_name }}
+    Prénom: {{ user.first_name }}
+
+
+    Adresse:
+
+    Rue: {{ address.street }}
+    Suite adresse: {{ address.apartment }}
+    CP: {{ address.zip }}
+    Ville: {{ address.city }}
+
+
+{% endautoescape %}

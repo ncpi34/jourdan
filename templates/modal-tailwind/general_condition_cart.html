@@ -1,0 +1,75 @@
+{% load static %}
+<div v-cloak v-show="showModalConfirmCart"
+     tabindex="0"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+        <div class="z-50 relative p-3 mx-auto my-0 max-w-full"
+            style="width: 500px;">
+            <div class="bg-white rounded shadow-lg border flex flex-col overflow-hidden px-10 py-10">
+                <button class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                        v-on:click="showModalConfirmCart=false">
+                  <span class="bg-transparent text-red-500 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                    ×
+                  </span>
+                </button>
+                <div class="text-center">
+                    <span class="material-icons  p-4 text-yellow-700 font-bold border-blue-500 text-4xl">
+                        task_alt
+                    </span>
+                </div>
+                <div class="text-center py-6 text-2xl text-gray-700">Vous êtes sur le point de finaliser votre commande</div>
+
+                <label class="inline-flex items-center">
+                    <input type="checkbox" class="form-checkbox input-custom" v-model="checked">
+                    <span class="ml-2">J'accepte les
+
+                        <a {% if cgv_file.file.url %}href="{{ cgv_file.file.url }}" target="_blank" {% else %} href="#" {% endif %}  class="text-yellow-700 link hover:underline">
+                            conditions générales de vente
+                        </a>
+                    </span>
+                </label>
+
+                    <button v-on:click="showModalConfirmCart=false" v-if="!checked" type="button"
+                            class="text-center bg-transparent hover:bg-red-700 text-red-500 font-semibold hover:text-white py-2 px-4 border border-red-700 hover:border-transparent rounded mx-1 w-full mt-5">
+                        Annuler
+                    </button>
+
+                <!-- payment enabled -->
+                        {% if user.payment_enabled %}
+                            <form v-if="checked" v-on:submit="sendOrder = true"
+                                  action="{% url  'payment:payment_gateway' %}" method="post" class="">
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                class="w-full mt-5 justify-center inline-flex items-center btn btn-orange">
+                              <svg v-if="sendOrder" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Confirmer
+                            </button>
+
+                            </form>
+                    <!-- payment enabled -->
+
+                    <!-- payment not enabled -->
+                        {% else %}
+                            <a v-if="checked" v-on:submit="sendOrder = true"
+                                  href="{% url  'payment:order_without_payment' %}">
+
+                            <button type="submit"
+                                class="w-full mt-5 justify-center inline-flex items-center bg-transparent hover:bg-blue-700 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-700 hover:border-transparent rounded transition ease-in-out duration-150">
+                              <svg v-if="sendOrder" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Confirmer
+                            </button>
+                            </a>
+                        {% endif %}
+                <!-- payment not enabled -->
+                <div >
+                </div>
+            </div>
+        </div>
+        <div v-cloak class="z-40 overflow-auto left-0 top-0 bottom-0 right-0 w-full h-full fixed bg-black opacity-50"></div>
+    </div>

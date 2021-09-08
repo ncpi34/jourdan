@@ -1,0 +1,219 @@
+HANDLE MULTIPLE PYTHON AND USE ONE IN DEFAULT
+virtualenv -p C:\Users\HibaB.NCPI\AppData\Local\Programs\Python\Python38\python.exe worshop_venv
+pip install django==2.2 --upgrade
+pip install --upgrade django-extensions
+pip uninstall -r requirements.txt -y
+
+!!! Unit tests
+python manage.py test
+
+!!!SETTINGS
+https://docs.djangoproject.com/fr/3.1/topics/settings/
+set DJANGO_SETTINGS_MODULE=app.settings
+django-admin runserver
+
+!!!VIRTUAL ENV
+
+virtualenv --python=`which python` some_env
+
+mkvirtualenv --python=python3.8 zendic
+workon myproject -> activate virtualenv
+(myproject)14:51 ~ $ pip install django
+OR
+python -m venv berard_site
+berard_site/bin/activate  -> win10
+source zendic/bin/activate   -> linux
+OR
+pip install virtualenv
+virtualenv zendic_venv
+zendic_venv\Scripts\activate.bat
+
+!!!DJANGO
+pip install django
+python -m django --version
+django-admin startproject "
+django-admin startapp "
+python -m pip install Django==3.0.3
+python -m pip freeze > requirements.txt
+python manage.py createsuperuser
+python manage.py runserver
+python manage.py makemigrations --dry-run --verbosity 3
+
+!!!Unit Test
+python manage.py test
+python manage.py test --verbosity 2
+python manage.py test catalog.tests
+python manage.py test catalog.tests.test_models.YourTestClass.test_one_plus_one_equals_two
+
+!!!SHELL
+python manage.py shell
+from cart.models import PanierEnCours
+from django.contrib.auth.models import User
+User.objects.get(username="AERO50").id
+PanierEnCours.objects.all()
+PanierEnCours.objects.get(utilisateur=369).delete()
+
+p = PanierEnCours.objects.all()
+ [print(i).utilisateur for i in p]
+
+
+from restaurant.models import Restaurant
+Restaurant.objects.all()
+Restaurant.objects.filter(user__username='fidji')
+
+post = Post.objects.get(title="Sample title")
+post.publish()
+Post.objects.order_by('created_date')
+Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+
+
+!!!SQL
+python manage.py makemigrations
+python manage.py migrate
+python manage.py migrate --fake
+destroy all datas in db -> python manage.py flush
+
+
+
+!!! apply migration to application before project if CustomUser with foreygn key
+python manage.py migrate restaurant
+
+!!! SERVER
+ln -s /home/leal2819/public_html/restaurant.fr/back/media /home/leal2819/public_html/ledainalexis.fr/dist/perso/restaurant-back
+source /home/leal2819/virtualenv/public_html/restaurant.fr/back/3.7/bin/activate && cd /home/leal2819/public_html/restaurant.fr/back
+ssh leal2819@michigan.o2switch.net
+git remote add origin https://Alex347:Daily365@gitlab.com/Alex347/restaurant
+python manage.py collectstatic 
+
+!!!Factory_boy
+for i in range(1, 100):
+    GroupFactory.create()
+pip install factory_boy
+python manage.py shell
+from tests.factories.group import GroupFactory
+a = GroupFactory()
+for i in range(10): obj = GroupFactory()
+
+from test.factories.groupe import FamilyFactory
+a = FamilyFactory()
+for i in range(39): obj = FamilyFactory()
+
+BUILD
+obj = GroupeFactory.build(nom='Groupe 1')
+obj.nom
+CREATE
+obj = GroupeFactory.create(nom='Groupe 1')
+obj.nom
+CREATE MANY
+groups = GroupeFactory.create_batch(5, nom=factory.Sequence(lambda n: 'Groupe {0}'.format(n)))
+len(groups)
+[group.nom for group in groups]
+CHECK
+from website.models import Groupe
+g = Groupe.objects.all()
+print(g)
+from test.factories.groupe import GroupeFactory
+a = GroupeFactory()
+
+from test.factories.famille import FamilleFactory
+obj = FamilleFactory()
+for i in range(80): obj = FamilleFactory()
+obj = FamilleFactory.create(nom='Famille 1')
+CREATE MANY
+families = FamilleFactory.create_batch(50, nom=factory.Sequence(lambda n: 'Famille {0}'.format(n)))
+len(families)
+[familly.nom for familly in families]
+CHECK
+from website.models import Groupe
+g = Groupe.objects.all()
+print(g)
+
+from tests.factories.article import UserFactory
+obj = ArticleFactory()
+for i in range(10000): obj = ArticleFactory()
+obj = ArticleFactory.create(nom='Article 1')
+CREATE MANY
+families = ArticleFactory.create_batch(50, nom=factory.Sequence(lambda n: 'Famille {0}'.format(n)))
+len(families)
+[familly.nom for familly in families]
+CHECK
+from website.models import Groupe
+g = Article.objects.all()
+print(g)
+
+
+
+!!!DOCKER
+docker-compose up
+docker-compose up -d
+docker-compose exec web python manage.py makemigrations
+docker-compose exec web python manage.py migrate
+
+!!!Celery (Task queue)
+pip install celery
+win 10: https://github.com/microsoftarchive/redis/releases/tag/win-3.2.100
+linux: sudo apt install redis-server
+-> test
+redis-server
+redis-cli ping
+pip install redis
+celery -A clery_app_name worker -l info
+celery -A berard worker -l info
+celery -A berard beat -l info
+celery -A berard inspect active
+celery -A berard.celery worker -l DEBUG -E
+celery -A berard worker -l info -B
+
+pip install gevent
+celery -A berard beat -l info
+celery -A berard worker -l info -P gevent
+python -m celery -A berard beat -l info
+python -m celery -A berard -l info -P gevent
+
+pip install rabbitmq
+
+pip install flower
+flower -A berard --port=5555
+
+!!!Tests
+"""
+>>> dictionary = {"age": 84, "agreeableness": -0.8437190198916452}
+>>> agent = Agent(30, **dictionary)
+>>> agent.position
+30
+>>> agent.age
+84
+>>> agent.agreeableness
+-0.8437190198916452
+"""
+python -m doctest program/world.py
+python -m doctest program/world.py -v
+
+!!!pip
+pip install --ignore-installed -r requirements.txt
+pip install --upgrade pip setuptools
+pip check
+
+!!! coverage test
+Test Driven Development -> red to green to refactor
+pip install pytest
+pip install coverage
+pip install pytest-cov
+pytest --cov=program --cov-report html test_*.py
+-> create a file
+
+!!! Fake JSON
+python tests\factories\json\user.py
+
+!!! Tailwind
+https://pypi.org/project/django-tailwind/
+pip install django-tailwind
+add 'tailwind' -> settings.py
+theme/static_src/package.json
+linux:
+//    "dev": "watch 'npm run dev:sass && npm run dev:postcss' ./src",
+win10:
+"dev": "watch \"npm run dev:sass && npm run dev:postcss\" ./src",
+python manage.py tailwind start
+PRODUCTION
+python manage.py tailwind build

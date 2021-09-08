@@ -1,0 +1,41 @@
+
+    {
+        "id": 2,
+        "unique_number": "20201211174203468.73665E0EA1FA4AC8A0F0",
+        "date": "2020-12-11T17:42:03.483440+01:00",
+        "status": "Paid",
+        "delivery_date": null,
+        "message": null,
+        "items": [
+            {
+                "article": {
+                    "id": 127,
+                    "name": "30 CAPSULES CARTE NOIRE LUNGO CLASSIQUE",
+                    "barcode": "8000070011830",
+                    "article_code": "011830",
+                    "price_without_taxes": 7.89,
+                    "quantity": 2,
+                    "stock": 9,
+                    "rate_VAT": 5.5
+                }
+            },
+            {
+                "article": {
+                    "id": 257,
+                    "name": "KG SOURIS AGNEAU N/Z",
+                    "barcode": "2960507",
+                    "article_code": "033294",
+                    "price_without_taxes": 9.99,
+                    "quantity": 4,
+                    "stock": 195,
+                    "rate_VAT": 5.5
+                }
+            }
+        ],
+        "user": {
+            "user_id": 4,
+            "email": "ledain.alexis@gmail.com",
+            "first_name": "alexis",
+            "last_name": "le dain"
+        }
+    }

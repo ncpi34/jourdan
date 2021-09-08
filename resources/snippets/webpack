@@ -1,0 +1,5 @@
+mkdir frontend
+cd frontend
+npm i
+npm ~/venv-django/mysite/frontend yarn
+npm add --dev yarn vue-loader@v16.0.0-alpha.3 webpack-cli webpack webpack-dev-server typescript ts-loader @vue/compiler-sfc@v3.0.0-beta.10

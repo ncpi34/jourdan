@@ -1,0 +1,15 @@
+{% autoescape off %}
+Bonjour {{ user.email }},
+
+Vous venez de créer un compte,
+
+Si vous avez déjà fournit les documents ne prenez pas en compte ce message,
+
+S'il vous plait, cliquez sur le lien suivant afin de télécharger les fichiers nécessaires à l'activation de votre compte sur notre site:
+
+{{ protocol }}://{{ domain }}{% url 'account:upload_register' uidb64=uid token=token %}
+
+Sinon envoyez vos documents à cette adresse: administratif@atscash.fr
+
+En vous remerciant, au plaisir de vous voir sur notre site ;)
+{% endautoescape %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+    {% load static %}
+{% load custom_input_step %}
+
+{% block navbar %}
+    {% include "important/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto w-full lg:w-2/4 md:w-2/3 my-12 mx-auto px-4 md:px-12 min-h-screen">
+        <div class="bg-white p-6 shadow-xl rounded">
+            <div class="grid grid-rows-2 grid-flow-col gap-4">
+                    <div class="text-yellow-700 text-lg sm:row-span-2 row-span-1">
+                            {% if object.group %}
+                                <a href="{% url 'website:products_by_group' object.group.id%}" class="link hover:underline">
+                                    {{ object.group.name|title }}
+                                </a>/
+                            {% endif %}
+                            {% if object.family %}
+                                <a href="{% url 'website:products_by_family' object.family.id%}" class="link hover:underline">
+                                    {{ object.family.name|title }}
+                                </a>/
+                            {% endif %}
+                            {% if object.sub_family %}
+                                <a href="{% url 'website:products_by_subfamily' object.sub_family.id%}" class="link hover:underline">
+                                    {{ object.sub_family.name|title }}
+                                </a>/
+                            {% endif %}
+                            <a href="{{ object.get_absolute_url }}" class="link hover:underline">
+                                {{ object.name }}
+                            </a>
+                    </div>
+
+                       {% include 'important/searchbar.html' %}
+
+            </div>
+            <div class="grid grid-rows-1 grid-flow-col gap-4 py-4" id="productsSite">
+                <div class=" sm:row-span-2 row-span-1">
+                    <img class="" alt="photo de l'article" src="{{ object.get_img }}">
+                </div>
+            <div class="sm:row-span-2 row-span-1">
+                <p class="font-bold text-xl text-xl">{{ object.name|title }}</p>
+                <p class="py-4">
+                    <span class="">Code article: </span>
+                    <span>{{ object.article_code}}</span>
+                </p>
+                <p class="py-4">
+                <span class="">Description: </span>
+                <span>
+                    {% if article.description %}
+                        {{ article.description }}
+                    {% else %}
+                        Pas de description
+                    {% endif %}
+                </span>
+                </p>
+                <p class="py-4">
+                    <span class="product-price">
+                        {{ article.price_with_taxes }}€ {% if article.price_type == 1 %} /KG {% endif %}
+                    </span>
+                </p>
+
+                <form v-on:submit.prevent="addToCart($event)" data-id="{{ article.id }}"
+                      data-url="{% url 'cart:cart_add' product_id=article.id %}"
+                      method="post" class="flex py-6">
+                    {% csrf_token %}
+                    <div class="flex">
+                            <input style="height:3.5ch;font-size: 3ch;" required class="rounded w-1/2 input-custom"
+                                   data-url="{% url 'cart:cart_add' product_id=article.id %}"
+                                   step="{{ article.price_type|custom_input_step }}"
+                                   :ref="'{{ article.id }}'" type="number" min="0" max="{{ article.stock }}" placeholder="0"/>
+                        <div class="">
+                            <button class="form-control bg-transparent font-semibold  py-2 px-4 btn btn-orange"
+                                        type="submit">
+                                    <i :ref="'f_'+'{{ article.id }}'" class="material-icons">add_shopping_cart</i>
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block extrascripts %}
+    <script src="{% static 'js/Vue/products.js' %}"></script>
+{% endblock %}

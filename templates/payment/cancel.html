@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{%  load mathfilters %}
+
+{% block navbar %}
+    {% include 'important/navbar.html'  %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto w-full lg:w-3/4 md:w-2/3  my-12 mx-auto px-4 md:px-12 min-h-screen text-center">
+        <p class="py-10 text-3xl">Paiement annulé</p>
+        <p class="py-10 text-xl">Avez vous oublié d'ajouter un produit au panier?</p>
+        <a href="{% url 'cart:cart_detail' %}">
+            <button class="btn btn-orange">
+                    Revenir au panier
+            </button>
+        </a>
+    </div>
+
+{% endblock %}
+
+{% block extrascripts %}
+    <script></script>
+
+{% endblock %}
+
+
+
+

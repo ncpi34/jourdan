@@ -1,0 +1,38 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'account/css/login.css' %}">
+<div v-cloak v-show="showModalPaymentCondition" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-6xl">
+        <!--content-->
+        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+            <h1 class="text-4xl font-black mb-4">Conditions générales de paiement</h1>
+            <button class="p-1 ml-auto bg-transparent border-0 text-red-700 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    v-on:click="showModalPaymentCondition = false">
+              <span class="bg-transparent text-red-700 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                ×
+              </span>
+            </button>
+          </div>
+          <!--body-->
+            <div v-if="loading" class="flex justify-center">
+                <svg class="animate-spin -ml-1 mr-3 h-24 w-24 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+              <div v-else class="relative p-6 flex-auto">
+                  <loader object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+                   <div v-html="bodyPaymentCondition"></div>
+              </div>
+          <!--body-->
+          <!--footer-->
+          <div class=" justify-end text-center p-6 border-t border-solid border-gray-300 rounded-b">
+
+
+          </div>
+          <!-- footer -->
+        </div>
+      </div>
+    </div>
+    <div v-show="showModalPaymentCondition" class="opacity-25 fixed inset-0 z-40 bg-black" v-cloak></div>

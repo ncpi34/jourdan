@@ -1,0 +1,44 @@
+<div class="ml-5 bg-white shadow-md rounded container mx-auto justify-center text-center">
+    <h4 class="text-2xl">Votre Panier</h4>
+
+    <span class="bg-teal-500 text-white text-xs px-2 rounded">{{ order.get_articles|length }} produits</span>
+
+    <ul class="mt-3">
+    {% for order_item in order.get_articles %}
+    <li class="mb-3">
+        <div>
+        <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.article.name }}</h6>
+        </div>
+        <span class="text-muted">{{ order_item.get_cost }}€</span>
+    </li>
+    {% endfor %}
+
+    {% if order.coupon %}
+    <li class="">
+        <div class="text-success">
+        <h6 class="my-0">Code promo</h6>
+        <small>{{ order.coupon.code }}</small>
+        </div>
+        <span class="text-success">-${{ order.coupon.amount }}</span>
+    </li>
+    {% endif %}
+    </ul>
+    <span class="bg-blue-500 text-white text-xl-center px-2 rounded">{{ order.get_total_cost }}€</span>
+
+    {% if DISPLAY_COUPON_FORM %}
+    <form class="card p-2" action="{% url 'order:add-coupon' %}" method="POST">
+        {% csrf_token %}
+        <div class="md-form input-group">
+            <label for="promo_code" class="">Code promo</label>
+            {{ couponform.code }}
+            <div class="input-group-append">
+                <div class="text-center">
+                    <button class="btn btn-secondary waves-effect" type="submit">Appliquer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+
+</div>
+

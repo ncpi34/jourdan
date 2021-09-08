@@ -1,0 +1,96 @@
+{% load static %}
+{% load to_str %}
+
+<!-- Navbar goes here -->
+		<nav class="bg-black shadow-lg text-white" id="navbarVue">
+			<div class="max-w-6xl mx-auto px-4">
+				<div class="flex justify-between py-4 px-2">
+
+                    <div class="relative inline-block text-left">
+                        <!-- hamburger -->
+                                  <div>
+                                    <button v-on:click="toggleOption" type="button" class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium bg-black link"
+                                           aria-expanded="true" aria-haspopup="true">
+                                     <i class="material-icons" ref="hamburger">menu</i>
+                                    </button>
+                                  </div>
+                        <!-- hamburger -->
+
+                        <!-- menu -->
+                                  <div v-show="showOption" class="text-white origin-top-right absolute mt-2 w-48 rounded-md shadow-xl bg-black ring-1 ring-black ring-opacity-5 z-50" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                    <div class="py-1" role="none">
+                                      <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                                      <a href="{% url 'website:home' %}" class="block px-4 py-2 text-sm link" role="menuitem" tabindex="-1" id="menu-item-0">
+                                          <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">cottage</i>
+                                          <span>Accueil</span>
+                                      </a>
+                                      <a href="{% url 'website:products' %}" class="block px-4 py-2 text-sm link" role="menuitem" tabindex="-1" id="menu-item-0">
+                                         <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">menu_book</i>
+                                        <span>Catalogue</span>
+                                      </a>
+
+                                        {% if user.is_authenticated %}
+                                             <hr class="mt-2 mb-2">
+                                          <a href="{% url 'account:profile' %}" class="block px-4 py-2 text-sm link" role="menuitem" tabindex="-1" id="menu-item-0">
+                                             <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">account_circle</i>
+                                                <span>Espace Personnel</span>
+                                          </a>
+{#                                          <a href="{% url 'account:logout' %}" class="block px-4 py-2 text-sm hover:text-blue-700" role="menuitem" tabindex="-1" id="menu-item-0">#}
+{#                                              <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">exit_to_app</i>#}
+{#                                                <span>Déconnexion</span>#}
+{#                                          </a>#}
+{#                                        {% else %}#}
+{#                                          <a href="{% url 'account:login' %}" class="block px-4 py-2 text-sm hover:text-blue-700" role="menuitem" tabindex="-1" id="menu-item-0">#}
+{#                                              <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">account_circle</i>#}
+{#                                                <span>Connexion</span>#}
+{#                                          </a>#}
+                                        {% endif %}
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                        <!-- menu -->
+
+                            <!-- title -->
+                                <a href="{% url 'website:home' %}" class="link">
+                                    <h3 class="text-3xl">Nos B'elles Saisons</h3>
+                                </a>
+                            <!-- title -->
+                            <div class="space-x-4">
+                                <!-- cart -->
+                                 <a href="{% url 'cart:cart_detail' %}" title="Panier" class="link">
+                                         <!-- cart length -->
+                                         <i class="material-icons shopping_cart">shopping_cart</i>
+                                         <div v-if="cartItemsNumber == 0"
+                                                 class="absolute uppercase font-semibold rounded-full bg-red-600 w-4 h-4 p-0 m-0 text-white font-mono text-sm  leading-tight text-center">
+                                             [[ cartItemsNumber ]]
+                                         </div>
+
+                                         <div v-else class="absolute uppercase font-semibold rounded-full bg-green-600 w-4 h-4 p-0 m-0 text-white font-mono text-sm  leading-tight text-center">
+                                                 [[ cartItemsNumber ]]
+                                         </div>
+                                         <!-- cart length -->
+                                 </a>
+                                <!-- cart -->
+
+                                {% if user.is_authenticated %}
+                                    <a class="link" title="Déconnexion" href="{% url 'account:logout' %}">
+                                        <i class="material-icons" aria-hidden="true">logout</i>
+                                    </a>
+                                {% else %}
+                                    <a class="link" title="Connexion" href="{% url 'account:login' %}">
+                                        <i class="material-icons" aria-hidden="true">login</i>
+                                    </a>
+                                {% endif %}
+
+                            </div>
+
+					</div>
+				</div>
+
+
+		</nav>
+
+<script src="{% static 'js/Vue/navbar.js' %}"></script>
+

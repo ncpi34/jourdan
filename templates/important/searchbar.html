@@ -1,0 +1,10 @@
+{% load static %}
+<div class="pt-2 relative mx-auto text-gray-600" id="searchbar">
+    <form action="{% url 'website:products' %}" method="get" ref="searchForm">
+        <input class="h-10 px-5 pr-16 rounded-lg text-sm input-custom"
+                name="q" type="search" placeholder="Rechercher" id="search">
+        <button  type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+             <i class="text-gray-600 h-4 w-4 fill-current material-icons block">search</i>
+        </button>
+    </form>
+</div>

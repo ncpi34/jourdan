@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block navbar %}
+{% include "important/navbar.html" %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto w-full lg:w-2/4 md:w-2/3 my-12 mx-auto px-4 md:px-12 min-h-screen" id="loginVue">
+        {% include 'modal-tailwind/forgot_pwd.html' %}
+
+            <form method="post" class="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+            <h5 class="text-2xl py-8 text-center">Espace Connexion</h5>
+                {% csrf_token %}
+                <div class="mb-4 ">
+                  <label class="block text-grey-darker text-sm mb-2" for="username">
+                    {{ form.email.label_tag  }}
+                  </label>
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <div class="text-red-500 mb-1">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-6">
+                  <label class="block text-grey-darker text-sm mb-2" for="password">
+                    {{ form.password.label_tag  }}
+                  </label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="text-red-500 mb-1">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="link cursor-pointer"
+                       v-on:click.prevent="toggleModalForgotPwd()"
+                         data-url="{% url 'account:forgot_password' %}">
+                      Mot de passe oublié ?
+                  </div>
+                    <a class="link"
+                       href="{% url 'account:register' %}">Créer un compte
+                    </a>
+                  <button class="btn btn-orange"
+                          type="submit">
+                    Connexion
+                  </button>
+                </div>
+            </form>
+        </div>
+{% endblock content %}
+
+{% block extrascripts %}
+    <script src="{% static 'js/Vue/login.js' %}"></script>
+{% endblock %}
+

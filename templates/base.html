@@ -1,0 +1,141 @@
+{% load static %}
+{% load cookielaw_tags %}
+{% load tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+  <!-- -->
+  {% tailwind_css %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!--Responsive Meta Tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--SEO -->
+    <meta name="author" content="" />
+
+    <meta name="description" property="og:description" content="Épicerie de produits régionaux à Saint Gely du Fesc" />
+    <meta property="og:url" content="https://www.ncpi-test-site.fr/" />
+    <meta property="og:title" content="Nos B'Elles Saisons" />
+    <meta property="og:image" content="https://www.ncpi-test-site.fr/media/img/logo.png" />
+    <meta property="og:image:alt" content="Nos B'Elles Saisons logo" />
+
+    <meta name="keywords" content="nosbellessaisons, nos belles saisons, légume, fruit" />
+
+    <!--Import Google Icon Font-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      <link rel="preload" as="font"  href="{% static 'font/abel/abel.regular.ttf' %}" crossorigin>
+      <!--<link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"> -->
+
+      <!-- favicon -->
+        <link rel="icon" href="{% static 'favicon.ico' %}">
+      <!-- favicon -->
+
+      <!-- V-cloak-->
+      <link rel="stylesheet" href="{% static 'css/v-cloak.css' %}">
+      <!-- V-cloak-->
+
+        <!-- cookie law-->
+            <link rel="stylesheet" href="{% static 'cookie/css/cookielaw.css' %}">
+            <script src="{% static 'cookie/js/cookielaw.js' %}"></script>
+        <!-- cookie law-->
+
+
+      <!-- Stripe -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+        <script src="https://js.stripe.com/v3/"></script>
+      <!-- Stripe -->
+
+      <!-- Vue -->
+        <!-- development version, includes helpful console warnings -->
+
+
+        {% if debug %}
+          <!-- dev -->
+          <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        {% else %}
+          <!-- production -->
+          <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+        {% endif %}
+          <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js" ></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+      <!-- Vue -->
+
+  <!-- Swiper -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <!-- Swiper -->
+
+
+
+
+        {% block styles %}{% endblock %}
+
+  <title>{% block head_title %}Nos B'Elles Saisons{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
+  </head>
+
+  <body>
+
+    <div class="bg-gray-100 main" id="app">
+    {% cookielaw_banner %}
+    <!-- Navbar -->
+            {% block navbar %}
+            {% endblock %}
+    <!-- Navbar -->
+
+    <!-- flashmessages -->
+            <div>
+              {% include 'helpers/messages.html' %}
+            </div>
+    <!-- flashmessages -->
+
+    <!-- Content -->
+        <main>
+            {% block content %}
+            {% endblock content %}
+        </main>
+    <!-- Content -->
+
+            {% block extra_body %}
+            {% endblock %}
+
+            <!-- Footer -->
+                {% include "important/footer.html" %}
+            <!-- Footer -->
+        </div>
+
+    <!-- to get cart length-->
+    <script>
+          //set local storage
+          localStorage.setItem("cartLength", {{ cartLength }});
+          //create event to get it in navbar
+          window.dispatchEvent(new CustomEvent('cartLengthLocalstorageChanged', {
+                detail: {
+                            storage: localStorage.getItem('cartLength')
+                }
+          }));
+    </script>
+    <!-- to get cart length-->
+
+    <!-- JavaScript -->
+        {% block scripts %}
+            <script src="{% static 'js/hiddenUrl.js'%}"></script>
+            <!--<script src="https://js.stripe.com/v3/"></script> -->
+        {% endblock scripts %}
+    <!-- JavaScript -->
+    {% block extrascripts %}{% endblock extrascripts %}
+
+
+  </body>
+
+
+</html>
