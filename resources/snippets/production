@@ -13,7 +13,9 @@ sudo nano app/splited_settings/tailwind.py
 python manage.py tailwind init theme
 decomment theme in settings.py and TAILWIND_APP_NAME = 'theme'
 python manage.py tailwind install
+nano theme/static_src/src/styles.css -> modify file
 python manage.py tailwind build
+
 
 python manage.py collectstatic
 change allowed host to '*'
