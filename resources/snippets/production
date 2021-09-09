@@ -10,7 +10,7 @@ comment theme in settings.py and TAILWIND_APP_NAME = 'theme'
 comment app/splited_settings/tailwind.py NPM = '****'
 sudo nano app/settings
 sudo nano app/splited_settings/tailwind.py
-python manage.py tailwind init theme
+python manage.py tailwind init
 decomment theme in settings.py and TAILWIND_APP_NAME = 'theme'
 python manage.py tailwind install
 nano theme/static_src/src/styles.css -> modify file

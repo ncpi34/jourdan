@@ -4,7 +4,7 @@
 {% load custom_input_step %}
 
 {% block navbar %}
-    {% include "important/navbar.html" %}
+    {% include "important/navbar.html" with anchor=True %}
 {% endblock %}
 
 {% block styles %}
@@ -44,7 +44,7 @@
         </div>
         <!-- END head -->
     {% if grocery_txt %}
-        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4" id="grocery">
             {% if grocery_txt.picture %}
                 <img src="{{ grocery_txt.picture.url }}" class="object-scale-down" alt="photo épicerie">
             {% endif %}
@@ -61,7 +61,7 @@
     {% endif %}
 
     {% if cart_txt %}
-        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+        <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4" id="basket">
                 <div>
                     <hr class="mb-5">
                     <h4 class="mb-5 text-center uppercase font-bold title">{{ cart_txt.title|linebreaksbr }}</h4>
@@ -125,7 +125,7 @@
             {% endfor %}
         </div>
         {% if delivery_txt %}
-            <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4">
+            <div class="flex flex-col md:flex-row sm:flex-row py-8 space-x-4" id="delivery">
             {% if delivery_txt.picture %}
                 <img src="{{ delivery_txt.picture.url }}" class="object-scale-down" alt="photo épicerie">
             {% endif %}
@@ -139,6 +139,8 @@
                 </div>
         </div>
         {% endif %}
+
+        {% include 'important/anchor-top.html' %}
 </div>
 {% endblock %}
 

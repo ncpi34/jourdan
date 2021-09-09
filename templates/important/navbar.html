@@ -3,12 +3,12 @@
 
 <!-- Navbar goes here -->
 		<nav class="bg-black shadow-lg text-white" id="navbarVue">
-			<div class="max-w-6xl mx-auto px-4">
+			<div class="max-w-6xl mx-auto px-4 py-2">
 				<div class="flex justify-between py-4 px-2">
 
                     <div class="relative inline-block text-left">
                         <!-- hamburger -->
-                                  <div>
+                                  <div class="">
                                     <button v-on:click="toggleOption" type="button" class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium bg-black link"
                                            aria-expanded="true" aria-haspopup="true">
                                      <i class="material-icons" ref="hamburger">menu</i>
@@ -53,10 +53,17 @@
                         <!-- menu -->
 
                             <!-- title -->
-                                <a href="{% url 'website:home' %}" class="link">
-                                    <h3 class="text-3xl">Nos B'elles Saisons</h3>
+                                <a href="{% url 'website:home' %}" class="">
+                                    <h3 class="text-3xl link">Nos B'elles Saisons</h3>
                                 </a>
                             <!-- title -->
+                    {% if anchor %}
+                                <div class="space-x-4 hidden xl:block lg:block text-xl">
+                                    <a class="link" href="#grocery">Épicerie</a>
+                                    <a class="link" href="#basket">Paniers</a>
+                                    <a class="link" href="#delivery">Livraison</a>
+                                </div>
+                    {% endif %}
                             <div class="space-x-4">
                                 <!-- cart -->
                                  <a href="{% url 'cart:cart_detail' %}" title="Panier" class="link">
