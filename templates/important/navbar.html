@@ -19,11 +19,13 @@
                         <!-- menu -->
                                   <div v-show="showOption" class="text-white origin-top-right absolute mt-2 w-48 rounded-md shadow-xl bg-black ring-1 ring-black ring-opacity-5 z-50" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                                     <div class="py-1" role="none">
+                                    {% if not anchor %}
                                       <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                                       <a href="{% url 'website:home' %}" class="block px-4 py-2 text-sm link" role="menuitem" tabindex="-1" id="menu-item-0">
                                           <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">cottage</i>
                                           <span>Accueil</span>
                                       </a>
+                                    {% endif %}
                                       <a href="{% url 'website:products' %}" class="block px-4 py-2 text-sm link" role="menuitem" tabindex="-1" id="menu-item-0">
                                          <i class="inline-block align-baseline mr-2 material-icons"  aria-hidden="true">menu_book</i>
                                         <span>Catalogue</span>
@@ -54,7 +56,7 @@
 
                             <!-- title -->
                                 <a href="{% url 'website:home' %}" class="">
-                                    <h3 class="text-3xl link">Nos B'elles Saisons</h3>
+                                    <h3 class="text-3xl link">Nos B'Elles Saisons</h3>
                                 </a>
                             <!-- title -->
                     {% if anchor %}
