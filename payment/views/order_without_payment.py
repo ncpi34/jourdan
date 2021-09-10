@@ -50,7 +50,7 @@ class OrderWithoutPayment(LoginRequiredMixin, View):
 
             pdf = PDFGenerator().build_pdf(user, order)  # build pdf
             db_logger.info(f"pdf généré: {pdf}")
-            send_mail_to_user(order, user, pdf)  # send to mail
+            send_mail_to_user(self.request, order, user, pdf)  # send to mail
             remove_file(pdf)  # remove_file in directory
             db_logger.info(f"fichier supprimé")
 

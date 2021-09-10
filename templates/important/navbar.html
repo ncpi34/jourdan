@@ -19,7 +19,7 @@
                             </button>
                         </div>
                         <!-- hamburger -->
-
+                        
                         <!-- menu -->
                                   <div v-show="showOption" class="text-white origin-top-right absolute mt-2 w-48 rounded-md shadow-xl bg-black ring-1 ring-black ring-opacity-5 z-50" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                                     <div class="py-1" role="none">
@@ -57,7 +57,11 @@
 
                                 </div>
                         <!-- menu -->
-
+                        <div>
+                            <a href="{% url 'website:home' %}" class="block lg:hidden md:text-xl sm:text-xl text-center">
+                                <h3 class="link">Nos B'Elles Saisons</h3>
+                            </a>
+                        </div>                            
                             <!-- title -->
                 <div class="hidden lg:block xl:block">
                     <div class="space-x-4 text-xl">

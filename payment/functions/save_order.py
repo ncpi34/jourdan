@@ -56,7 +56,7 @@ def save_order(cart: Cart, order: Order, user: User):
     return True
 
 
-def send_mail_to_user(order: Order, user: User, pdf: IO):
+def send_mail_to_user(request, order: Order, user: User, pdf: IO):
     """
     Send mail to user
     Args:
@@ -67,10 +67,11 @@ def send_mail_to_user(order: Order, user: User, pdf: IO):
     Returns: void
 
     """
+    current_site = request.get_host()
     message = render_to_string('mail/order_email.html', {
         'user': user,
         'order': order,
-        'domain': settings.CURRENT_SITE
+        'domain': current_site
     })
 
     tab_mails = [settings.DELIVERY_MAIL]
